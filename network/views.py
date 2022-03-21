@@ -57,7 +57,7 @@ def index(request, page_number=1):
     })
 
 @csrf_exempt
-def profile_page(request, username):
+def profile_page(request, username, page_number=1):
 
     # Determine the user who owns this profile
     profile_owner = User.objects.get(username=username)
@@ -81,17 +81,32 @@ def profile_page(request, username):
     followers = profile_owner.followers.aggregate(Count("id"))
     following = profile_owner.following.aggregate(Count("id"))
 
+    # Retrieve all user posts and save them in a list
+    posts = profile_owner.posts.all()
+    posts = posts[::-1]
+
+    p = Paginator(posts, 10)
+    current_page = p.page(page_number)
+    page_posts = current_page.object_list
+
     return render(request, "network/profile.html", {
         "owner": str(profile_owner.username),
         "visitor": str(request.user),
         "followers": followers["id__count"],
         "following": following["id__count"],
-        "posts": reversed(profile_owner.posts.all()),
+        "posts": page_posts,
+        "num_pages": p.num_pages,
+        "current_page": current_page,
+        "has_next": current_page.has_next(),
+        "has_prev": current_page.has_previous(),
+        "next_num": current_page.next_page_number,
+        "prev_num": current_page.previous_page_number,
+        "p": p,
         "isFollower": isFollower
     })
 
 
-def following_page(request):
+def following_page(request, page_number=1):
 
     visitor = request.user
 
@@ -101,8 +116,19 @@ def following_page(request):
         for post in user.posts.all():
             posts.append(post)
 
+    p = Paginator(posts, 10)
+    current_page = p.page(page_number)
+    page_posts = current_page.object_list
+
     return render(request, "network/following.html", {
-        "posts": reversed(posts)
+        "posts": page_posts,
+        "num_pages": p.num_pages,
+        "current_page": current_page,
+        "has_next": current_page.has_next(),
+        "has_prev": current_page.has_previous(),
+        "next_num": current_page.next_page_number,
+        "prev_num": current_page.previous_page_number,
+        "p": p,
     })
 
 @csrf_exempt
