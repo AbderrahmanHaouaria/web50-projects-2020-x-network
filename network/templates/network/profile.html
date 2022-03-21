@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <input id="owner-username" type="hidden" value="{{ owner }}">
+    <input id="visitor-username" type="hidden" value="{{ visitor }}">
+
+    <div id="profile-header">
+        <h2 id="profile-username">{{ owner }}</h2>
+        <h5>Followers: <span id="followers-count">{{ followers }}</span></h5>
+        <h5>Following: <span id="following-count">{{ following }}</span></h5>
+
+        {% if visitor != owner %}
+            {% if isFollower %}
+                <input id="follow-btn" class="btn btn-primary" type="submit" value="Unfollow">
+            {% else %}
+                <input id="follow-btn" class="btn btn-primary" type="submit" value="Follow">
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% for post in posts %}
+        <div class="posts">
+            <a href="{% url 'network:profile' post.user %}">{{ post.user }}</a>
+            <p>{{ post.content }}</p>
+            <p>{{ post.date }}</p>
+            <p><span class="post-likes">{{ post.likes.all.count }}</span> Likes</p>
+
+            {% if post.user == user %}
+                <input class="btn btn-primary editBtn" type="submit" value="Edit" style="border-radius: 16px; position: relative;">
+            {% endif %}
+
+            <input type="hidden" class="post-id" value="{{ post.id }}">
+        </div>
+    {% endfor %}
+{% endif %}
+<script src="{% static 'network/profil.js' %}"></script>
+<script src="{% static 'network/inde.js' %}"></script>
+{% endblock %}

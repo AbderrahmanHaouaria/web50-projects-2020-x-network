@@ -1,0 +1,58 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <h1 style="font-size: 36px;">All Posts</h1><hr>
+
+    {% if user.is_authenticated %}
+        <form action="" method="post">
+            <div class="mb-2" style="margin: auto 20px auto 20px;">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn btn-primary" type="submit" value="Post" style="margin-top: 10px;">
+            </div>
+        </form><hr>
+    {% endif %}
+
+    {% for post in posts %}
+        <div class="posts" style="position: relative;">
+            <a href="{% url 'network:profile' post.user %}">{{ post.user }}</a>
+            <hr style="margin-top: 0; width: 20%; position: relative; margin-left: 0px;">
+            <p>{{ post.content }}</p>
+            <small>{{ post.date }}</small><br>
+            <small><span class="post-likes">{{ post.likes.all.count }}</span> Likes</small><br>
+
+            {% if user in post.likes.all %}
+                <input class="btn btn-primary likeBtn" type="submit" value="Unlike" style="border-radius: 16px;">
+            {% else %}
+                <input class="btn btn-primary likeBtn" type="submit" value="Like" style="border-radius: 16px;">
+            {% endif %}
+
+            {% if post.user == user %}
+                <input class="btn btn-primary editBtn" type="submit" value="Edit" style="border-radius: 16px; position: relative;">
+            {% endif %}
+
+            <input type="hidden" class="post-id" value="{{ post.id }}">
+        </div>
+    {% endfor %}
+
+    <nav aria-label="Posts navigation" style="margin-top: 20px;">
+        <ul class="pagination justify-content-center">
+            {% if has_prev %}
+                <li class="page-item"><a class="page-link" href="{{ prev_num }}">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Previous</a></li>
+            {% endif %}
+            {% for i in p.page_range %}
+                <li class="page-item"><a class="page-link" href="{{i}}">{{i}}</a></li>
+            {% endfor %}
+            {% if has_next %}
+                <li class="page-item"><a class="page-link" href="{{ next_num }}">Next</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Next</a></li>
+            {% endif %}
+        </ul>
+      </nav>
+      <script src="{% static 'network/inde.js' %}"></script>
+{% endblock %}

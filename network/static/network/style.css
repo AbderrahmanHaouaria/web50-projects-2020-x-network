@@ -1,0 +1,18 @@
+body {
+    padding: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.posts {
+    border: solid;
+    padding: 3px 3px 3px 6px;
+    border-radius: 20px;
+    margin-bottom: 3px;
+}
+
+#profile-header {
+    background-color: lightgray;
+    padding: 7px 7px 7px 11px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
