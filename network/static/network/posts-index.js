@@ -4,17 +4,17 @@ document.querySelectorAll(".editBtn").forEach( (element) => {
 
         if (event.target.value === "Edit"){
 
-            const oldContent = event.target.parentElement.children[1].innerText;
+            const oldContent = event.target.parentElement.querySelector(".post-content").innerText;
 
-            event.target.parentElement.children[1].outerHTML = `<textarea id='edited-content' class='form-control' rows='2'>${oldContent}</textarea>`;
+            event.target.parentElement.querySelector(".post-content").outerHTML = `<textarea id='edited-content' class='form-control' rows='2'>${oldContent}</textarea>`;
             event.target.value = "Save";
         } else {
 
             const postId = event.target.parentElement.querySelector(".post-id").value;
 
-            const newContent = event.target.parentElement.children[1].value;
+            const newContent = event.target.parentElement.querySelector("#edited-content").value;
 
-            event.target.parentElement.children[1].outerHTML = `<p>${newContent}</p>`;
+            event.target.parentElement.querySelector("#edited-content").outerHTML = `<p>${newContent}</p>`;
             event.target.value = "Edit";
 
             fetch(`/update-post/${postId}/${newContent}`, {

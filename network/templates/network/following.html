@@ -8,9 +8,10 @@
         {% for post in posts %}
             <div class="posts" style="position: relative;">
                 <a href="{% url 'network:profile' post.user %}">{{ post.user }}</a>
-                <p>{{ post.content }}</p>
-                <p>{{ post.date }}</p>
-                <p><span class="post-likes">{{ post.likes.all.count }}</span> Likes</p>
+                <hr style="margin-top: 0; width: 20%; position: relative; margin-left: 0px;">
+                <p class="post-content">{{ post.content }}</p>
+                <small>{{ post.date }}</small><br>
+                <small><span class="post-likes">{{ post.likes.all.count }}</span> Likes</small><br>
 
                 {% if user in post.likes.all %}
                     <input class="btn btn-primary likeBtn" type="submit" value="Unlike" style="border-radius: 16px;">
@@ -41,5 +42,5 @@
         </nav>
 
     {% endif %}
-    <script src="{% static 'network/inde.js' %}"></script>
+    <script src="{% static 'network/posts-index.js' %}"></script>
 {% endblock %}

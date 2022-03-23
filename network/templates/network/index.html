@@ -19,7 +19,7 @@
         <div class="posts" style="position: relative;">
             <a href="{% url 'network:profile' post.user %}">{{ post.user }}</a>
             <hr style="margin-top: 0; width: 20%; position: relative; margin-left: 0px;">
-            <p>{{ post.content }}</p>
+            <p class="post-content">{{ post.content }}</p>
             <small>{{ post.date }}</small><br>
             <small><span class="post-likes">{{ post.likes.all.count }}</span> Likes</small><br>
 
@@ -54,5 +54,5 @@
             {% endif %}
         </ul>
       </nav>
-      <script src="{% static 'network/inde.js' %}"></script>
+      <script src="{% static 'network/posts-index.js' %}"></script>
 {% endblock %}
